@@ -1,0 +1,3 @@
+# Project exclude paths
+/.gradle/
+/Smart Calculator (Kotlin)/task/build/
