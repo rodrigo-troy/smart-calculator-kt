@@ -9,7 +9,7 @@ $ Project: smart-calculator
  */
 
 class Calculator {
-    private val isNumber = Regex("\\s*-?(\\d+)\\s*")
+    private val isNumber = Regex("\\s*[-+]?(\\d+)\\s*")
     private val isSpace = Regex("\\s+")
     private val isOperator = Regex("\\s*[-+]+\\s*")
     private val isSum = Regex("\\s*[+]+\\s*")

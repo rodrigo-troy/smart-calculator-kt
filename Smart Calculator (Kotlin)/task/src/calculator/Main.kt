@@ -1,7 +1,10 @@
 package calculator
 
 private val isAlpha = Regex("[a-zA-Z]+")
-private val isMalformed = Regex("[^0-9-+\\s]+")
+private val isUnknowCommand = Regex("/[a-zA-Z]+")
+private val isMalformed1 = Regex("\\s*[0-9]*[-+]+\\s*")
+private val isMalformed2 = Regex("\\s*[-+]+[0-9]+\\s*")
+
 fun main() {
     val calculator = Calculator()
 
@@ -17,12 +20,17 @@ fun main() {
             continue
         }
 
+        if (input.matches(isUnknowCommand)) {
+            println("Unknown command")
+            continue
+        }
+
         if (input.contains(isAlpha)) {
             println("Invalid expression")
             continue
         }
 
-        if (input.contains(isMalformed)) {
+        if (input.matches(isMalformed1)) {
             println("Invalid expression")
             continue
         }
