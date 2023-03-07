@@ -1,11 +1,11 @@
 package calculator
 
-private val isAlpha = Regex("[a-zA-Z]+")
 private val isUnknowCommand = Regex("/[a-zA-Z]+")
 private val isMalformed = Regex("\\s*[0-9]*[-+]+\\s*")
 
 fun main() {
     val calculator = Calculator()
+    val variableCalculator = VariableCalculator()
 
     while (true) {
         val input = readln()
@@ -24,13 +24,23 @@ fun main() {
             continue
         }
 
-        if (input.contains(isAlpha)) {
-            println("Invalid expression")
+        if (variableCalculator.isInvalidIdentifier(input) || variableCalculator.isInvalidVariableDeclaration(input)) {
+            println("Invalid identifier")
             continue
         }
 
-        if (input.matches(isMalformed)) {
-            println("Invalid expression")
+        if (variableCalculator.isVariableDeclaration(input)) {
+            variableCalculator.addVariable(input)
+            continue
+        }
+
+        if (variableCalculator.isVariable(input) && variableCalculator.variableExists(input)) {
+            println(variableCalculator.getVariableValue(input))
+            continue
+        }
+
+        if (variableCalculator.isVariable(input) && !variableCalculator.variableExists(input)) {
+            println("Unknown variable")
             continue
         }
 
@@ -39,6 +49,10 @@ fun main() {
             continue
         }
 
-        println(calculator.calculate(input))
+        if (variableCalculator.isVariableMapEmpty()) {
+            println(calculator.calculate(input))
+        } else {
+            println(calculator.calculate(variableCalculator.getExpresion(input)))
+        }
     }
 }
