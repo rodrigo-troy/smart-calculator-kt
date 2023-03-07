@@ -1,20 +1,25 @@
 package calculator
 
-val isNumber = Regex("\\s*-?(\\d+)\\s*")
-val isSpace = Regex("\\s+")
 fun main() {
+    val calculator = Calculator()
 
     while (true) {
         val input = readln()
-        val tokens = input.split(isSpace)
 
-        if (tokens.all { it.matches(isNumber) }) {
-            println(tokens.sumOf { it.toInt() })
-        } else if (input == "/exit") {
+        if (input.isBlank()) {
+            continue
+        }
+
+        if (input == "/exit") {
             println("Bye!")
             break
-        } else if (input == "/help") {
-            println("The program calculates the sum of numbers")
         }
+
+        if (input == "/help") {
+            println("The program calculates simple mathematical expressions.")
+            continue
+        }
+
+        println(calculator.calculate(input))
     }
 }
