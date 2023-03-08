@@ -1,11 +1,11 @@
 package calculator
 
 private val isUnknowCommand = Regex("/[a-zA-Z]+")
-private val isMalformed = Regex("\\s*[0-9]*[-+]+\\s*")
 
 fun main() {
     val calculator = Calculator()
     val variableCalculator = VariableCalculator()
+    val postFixCalculator = PostFixCalculator()
 
     while (true) {
         val input = readln()
@@ -21,6 +21,11 @@ fun main() {
 
         if (input.matches(isUnknowCommand)) {
             println("Unknown command")
+            continue
+        }
+
+        if (postFixCalculator.isInvalidExpression(input)) {
+            println("Invalid expression")
             continue
         }
 

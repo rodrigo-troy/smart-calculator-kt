@@ -11,9 +11,11 @@ $ Project: smart-calculator
 class Calculator {
     private val isNumber = Regex("\\s*[-+]?(\\d+)\\s*")
     private val isSpace = Regex("\\s+")
-    private val isOperator = Regex("\\s*[-+]+\\s*")
+    private val isOperator = Regex("\\s*[-+*/^]+\\s*")
     private val isSum = Regex("\\s*[+]+\\s*")
     private val isSub = Regex("\\s*-+\\s*")
+    private val isMul = Regex("\\s*[*]\\s*")
+    private val isDiv = Regex("\\s*/\\s*")
 
     fun calculate(input: String): Int {
         val tokens = input.split(isSpace)
@@ -26,6 +28,10 @@ class Calculator {
                     total += it.toInt()
                 } else if (currentOperator == "-") {
                     total -= it.toInt()
+                } else if (currentOperator == "*") {
+                    total *= it.toInt()
+                } else if (currentOperator == "/") {
+                    total /= it.toInt()
                 }
             } else if (it.matches(isOperator)) {
                 if (it.matches(isSum)) {
@@ -34,6 +40,10 @@ class Calculator {
                     currentOperator = "+"
                 } else if (it.matches(isSub) && it.length % 2 == 1) {
                     currentOperator = "-"
+                } else if (it.matches(isMul)) {
+                    currentOperator = "*"
+                } else if (it.matches(isDiv)) {
+                    currentOperator = "/"
                 }
             }
         }
