@@ -14,16 +14,10 @@ private val isSpace = Regex("\\s+")
 private val isOperator = Regex("\\s*[-+]+\\s*")
 private val isNumber = Regex("\\s*[-+]?(\\d+)\\s*")
 private val isVariableDeclaration = Regex("\\s*[a-zA-Z]+\\s*=\\s*[-+]?[\\d|a-zA-Z]+\\s*")
-private val isInvalidVariableDeclaration =
-    Regex("\\s*([a-zA-Z]+\\d+[a-zA-Z]*|\\d+[a-zA-Z]+|[a-zA-Z]+\\d+[a-zA-Z]+|[^a-zA-Z0-9]+)\\s*=\\s*[-+]?[\\d|a-zA-Z]+\\s*")
 private val isVariable = Regex("\\s*[a-zA-Z]+\\s*")
 
 class VariableCalculator {
     private val variablesMap = mutableMapOf<String, String>()
-
-    fun isInvalidVariableDeclaration(input: String): Boolean {
-        return input.matches(isInvalidVariableDeclaration)
-    }
 
     fun isVariableMapEmpty(): Boolean {
         return variablesMap.isEmpty()
@@ -31,6 +25,36 @@ class VariableCalculator {
 
     fun isVariableDeclaration(input: String): Boolean {
         return input.matches(isVariableDeclaration)
+    }
+
+    fun isInvalidVariableDeclaration(input: String): Boolean {
+        if (input.contains("=")) {
+            if (input.count { it == '=' } > 1) {
+                return true
+            }
+
+            val tokens = input.split("=")
+
+            tokens.forEach {
+                if (it.matches(isInvalidIdentifier)) {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
+    fun isNotFoundVariableDeclaration(input: String): Boolean {
+        if (input.contains("=")) {
+            val tokens = input.split("=")
+
+            if (isVariable.matches(tokens[1]) && !this.variableExists(tokens[1])) {
+                return true
+            }
+        }
+
+        return false
     }
 
     fun isInvalidIdentifier(input: String): Boolean {
@@ -42,7 +66,7 @@ class VariableCalculator {
     }
 
     fun variableExists(input: String): Boolean {
-        return variablesMap.containsKey(input)
+        return variablesMap.containsKey(input.trim())
     }
 
     fun addVariable(input: String) {

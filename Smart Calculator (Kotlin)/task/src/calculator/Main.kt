@@ -24,8 +24,18 @@ fun main() {
             continue
         }
 
-        if (variableCalculator.isInvalidIdentifier(input) || variableCalculator.isInvalidVariableDeclaration(input)) {
+        if (variableCalculator.isInvalidIdentifier(input)) {
             println("Invalid identifier")
+            continue
+        }
+
+        if (variableCalculator.isInvalidVariableDeclaration(input)) {
+            println("Invalid assignment")
+            continue
+        }
+
+        if (variableCalculator.isVariableDeclaration(input) && variableCalculator.isNotFoundVariableDeclaration(input)) {
+            println("Unknown variable")
             continue
         }
 
